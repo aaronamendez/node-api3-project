@@ -13,6 +13,8 @@ const {
 
 const router = express.Router();
 
+router.use(logger);
+
 router.get('/', (req, res) => {
 	// RETURN AN ARRAY WITH ALL THE USERS
 	users

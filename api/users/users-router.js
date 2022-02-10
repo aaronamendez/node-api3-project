@@ -63,12 +63,22 @@ router.delete('/:id', validateUserId, (req, res) => {
 router.get('/:id/posts', validateUserId, (req, res) => {
 	// RETURN THE ARRAY OF USER POSTS
 	// this needs a middleware to verify user id
+	users.getUserPosts(req.user.id).then((posts) => {
+		res.status(200).json(posts);
+	});
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
 	// RETURN THE NEWLY CREATED USER POST
 	// this needs a middleware to verify user id
 	// and another middleware to check that the request body is valid
+	const obj = {
+		user_id: req.user.id,
+		text: req.post,
+	};
+	posts.insert(obj).then((post) => {
+		res.status(201).json(post);
+	});
 });
 
 // do not forget to export the router

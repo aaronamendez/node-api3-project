@@ -38,8 +38,20 @@ async function validateUser(req, res, next) {
 	}
 }
 
-function validatePost(req, res, next) {
+async function validatePost(req, res, next) {
 	// DO YOUR MAGIC
+	try {
+		const { text } = req.body;
+		if (text) {
+			req.post = text;
+			console.log(req.post);
+			next();
+		} else {
+			res.status(400).json({ message: 'missing required text field' });
+		}
+	} catch (err) {
+		res.status(500).json({ message: 'internal server error' });
+	}
 }
 
 // do not forget to expose these functions to other modules
